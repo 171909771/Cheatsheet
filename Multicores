@@ -1,0 +1,27 @@
+- https://www.cnblogs.com/xinping-study/p/6897891.html
+- https://zhuanlan.zhihu.com/p/353329988
+
+################### for 多核心
+library(foreach)
+library(doParallel)
+
+cl <- makeCluster(5)
+registerDoParallel(cl)
+
+time1 <- Sys.time()
+x2 <- foreach(i = 1:3e4, .combine = c) %dopar% {
+  mean(rnorm(1e5))
+}
+time2 <- Sys.time()
+print(time2-time1)
+
+################## lappy 多核心
+library(parallel)
+fun <- function(x){
+  return (x+1);
+}
+
+detectCores(logical = F)  # 8
+mc <- getOption("mc.cores", 5)
+
+res <- mclapply(1:5000000, fun, mc.cores = mc)
